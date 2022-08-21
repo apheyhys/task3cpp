@@ -1,63 +1,59 @@
+// Задаем константы
+#define MAX 80 // максимальное количество символов в файле
+
 #include <iostream>
-#include <cstdio>
+// Функция записи в файл
+#include "writefile.h"
+// Функция чтения из файла
+#include "readfile.h"
+// Функция для определения количества символов в исходном файле
+#include "array_size.h"
+// Функция для определения порядкового номера элемента, после которого нужно добавлять новый элемент
+#include "find_element_number.h"
+// Функция для добавления нового элемента
+#include "add_element.h"
 
 using namespace std;
 
-#include <fstream>
+// --- !Нужно прописать пути!
+#define MAIN_FILE_NAME "/home/apheyhys/CLionProjects/task3cpp/readfile.txt" // адрес основного текста
+#define TOTAL_STRING "/home/apheyhys/CLionProjects/task3cpp/totalstring.txt" // итоговый файл
 
-
-// Задаем константы
-#define MAX 80 // максимальное количество символов в файле
-// --- !Нужно прописать путь до файла для Windows. Сейчас стоит путь для linux. Он не будет работать ---
-#define MAIN_FILE_NAME "/home/ubuntu/CLionProjects/task3cpp/readfile.txt" // адрес основного текста
-//#define SEARCH_SYMBOL "/home/ubuntu/CLionProjects/untitled1/search_symbol.txt" // искомый символ
-//#define ADDED_SYMBOL "/home/ubuntu/CLionProjects/untitled1/added_symbol.txt" // символ, который нужно добавить
-//#define TOTAL_STRING "/home/ubuntu/CLionProjects/untitled1/totalstring.txt" // итоговый файл
-
-
-char *readfile(char *filename);
 
 int main() {
-//    setlocale(LC_ALL, "ru");
-    const char *word = "";
-    cout << word << endl;
-    const char *read_file = readfile(MAIN_FILE_NAME);
-    cout << read_file << endl;
+    // Получаем количество символов в файле, если размер больше 80 символов, то возвращаем 80
+    int size = array_size(MAIN_FILE_NAME);
+
+    // Читаем файл, возвращаем указатель на массив
+    const char *read_file = readfile(MAIN_FILE_NAME, size);
+
+    cout << "Изначальная стока:" << endl;
+    cout << "\"" << read_file << "\"" << endl;
+
+    // Запрашиваем символ, после которого нужно вставить новый элемент
+    char searched_symbol;
+    cout << "-----------------------------" << endl;
+    cout << "Введите символ, после которого нужно вставить новый элемент:" << endl;
+    cin >> searched_symbol;
+
+    // Запрашиваем символ, который нужно вставить
+    char inserted_element;
+    cout << "Введите символ который нужно вставить:" << endl;
+    cin >> inserted_element;
+
+    // Ищем порядковый номер элемента, после которого нужно произвести вставку
+    int element_number = find_element_number(read_file, searched_symbol, size);
+
+    // Возвращаем получившийся массив
+    const char * total_list = add_element(read_file, element_number, inserted_element, size);
+
+    cout << "Итоговая стока:" << endl;
+    cout << "\"" << total_list << "\"" << endl;
+
+    // Записываем в файл
+    writefile(total_list, TOTAL_STRING);
+
     return 0;
-}
-
-char *readfile(char *filename) {
-    ifstream readfile(filename, ios::in);
-    if (!readfile) {
-        cout << "Ошибка открытия файла" << endl;
-        return reinterpret_cast<char *>(1);
-    } else {
-        cout << "Файл открылся" << endl;
-        int count = 0;
-        char ch;
-        while (!readfile.eof()) {
-            readfile >> ch;
-            count++;
-        }
-
-        int arr_length;
-
-        if (count > MAX) {
-            arr_length = MAX;
-        } else {
-            arr_length = count;
-        }
-
-        char *arr = new char[arr_length];
-
-        ifstream doublereadfile(filename);
-        doublereadfile >> std::noskipws;
-
-        for (int n = 0; n < arr_length; ++n) {
-            doublereadfile >> arr[n];
-        }
-        return arr;
-    }
 }
 
 
