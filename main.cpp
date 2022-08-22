@@ -2,6 +2,7 @@
 #define MAX 80 // максимальное количество символов в файле
 
 #include <iostream>
+
 // Функция записи в файл
 #include "writefile.h"
 // Функция чтения из файла
@@ -16,8 +17,8 @@
 using namespace std;
 
 // --- !Нужно прописать пути!
-#define MAIN_FILE_NAME "/home/apheyhys/CLionProjects/task3cpp/readfile.txt" // адрес основного текста
-#define TOTAL_STRING "/home/apheyhys/CLionProjects/task3cpp/totalstring.txt" // итоговый файл
+#define MAIN_FILE_NAME "/home/ubuntu/CLionProjects/task3cpp/readfile.txt" // адрес основного текста
+#define TOTAL_STRING "/home/ubuntu/CLionProjects/task3cpp/totalstring.txt" // итоговый файл
 
 
 int main() {
